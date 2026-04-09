@@ -1,5 +1,6 @@
 import express from "express";
-import { Kafka, Admin, Consumer, Producer } from "kafkajs";
+import kafkajs from "kafkajs";
+import type { Admin, Consumer, Producer, Kafka as KafkaClient } from "kafkajs";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -18,10 +19,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-let kafka: Kafka;
+let kafka: KafkaClient;
 let admin: Admin;
 let consumer: Consumer;
 let producer: Producer;
+const { Kafka } = kafkajs;
 let kafkaConfig = { clientId: "kafka-dashboard", brokers: ["localhost:9092"] };
 // Store message count and keys per partition
 let partitionData: Record<
